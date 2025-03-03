@@ -1,0 +1,96 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    text-align: center;
+}
+
+/* Header */
+header {
+    background: #007bff;
+    color: white;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    margin-left: 20px;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin: 0 15px;
+}
+
+.btn {
+    padding: 10px 20px;
+    background: white;
+    color: #007bff;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+.btn-signup {
+    background: #28a745;
+    color: white;
+}
+
+/* Hero Section */
+.hero {
+    margin-top: 80px;
+    background: url('000.jpg') no-repeat center center/cover;
+    color: rgb(255, 255, 255);
+    padding: 100px 20px;
+}
+
+.hero h1 {
+    font-size: 40px;
+}
+
+.hero p {
+    font-size: 18px;
+}
+
+/* About Section */
+#about {
+    padding: 40px 20px;
+    background: white;
+}
+
+/* Our Plans Section */
+#plans {
+    padding: 40px 20px;
+    background: #eef;
+}
+
+.plan-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.plan {
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    width: 300px;
+}
+
+/* Footer */
+footer {
+    padding: 20px;
+    background: #333;
+    color: white;
+}
