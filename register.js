@@ -1,22 +1,17 @@
-document.addEventListener("DOMContentLoaded", function () {
-    const registerForm = document.getElementById("registerForm");
+function toggleFields() {
+    var userType = document.getElementById("user_type").value;
+    document.getElementById("seeker_fields").style.display = userType == "job_seeker" ? "block" : "none";
+    document.getElementById("giver_fields").style.display = userType == "job_giver" ? "block" : "none";
+}
 
-    registerForm.addEventListener("submit", function (event) {
-        const username = document.getElementById("username").value.trim();
-        const email = document.getElementById("email").value.trim();
-        const password = document.getElementById("password").value.trim();
-        const role = document.getElementById("role").value;
-        
-        if (username === "" || email === "" || password === "" || role === "") {
-            alert("All fields are required!");
-            event.preventDefault();
-            return;
-        }
+function validateForm() {
+    var name = document.getElementById("name").value;
+    var email = document.getElementById("email").value;
+    var password = document.getElementById("password").value;
 
-        if (password.length < 6) {
-            alert("Password must be at least 6 characters long.");
-            event.preventDefault();
-            return;
-        }
-    });
-});
+    if (name.trim() == "" || email.trim() == "" || password.trim() == "") {
+        alert("Please fill out all required fields.");
+        return false;
+    }
+    return true;
+}

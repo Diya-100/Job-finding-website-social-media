@@ -1,45 +1,38 @@
 <?php
-include 'db.php';
-session_start();
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $username = trim($_POST['username']);
-    $email = trim($_POST['email']);
-    $password = trim($_POST['password']);
-    $role = $_POST['role'];
+    include 'config.php';
 
-    // Hash the password
-    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+    $name = $_POST['name'];
+    $email = $_POST['email'];
+    $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
+    $user_type = $_POST['user_type'];
+    $experience = $education = $company_name = $position = NULL;
 
-    // Check if username or email already exists
-    $stmt = $conn->prepare("SELECT * FROM users WHERE username = :username OR email = :email");
-    $stmt->bindParam(":username", $username);
-    $stmt->bindParam(":email", $email);
-    $stmt->execute();
-
-    if ($stmt->rowCount() > 0) {
-        echo "<script>alert('Username or Email already taken!'); window.location.href='register.php';</script>";
-        exit();
+    if ($user_type == "job_seeker") {
+        $experience = $_POST['experience'];
+        $education = $_POST['education'];
+    } elseif ($user_type == "job_giver") {
+        $company_name = $_POST['company_name'];
+        $position = $_POST['position'];
     }
 
-    // Insert user into database
-    $stmt = $conn->prepare("INSERT INTO users (username, email, password, role) VALUES (:username, :email, :password, :role)");
-    $stmt->bindParam(":username", $username);
-    $stmt->bindParam(":email", $email);
-    $stmt->bindParam(":password", $hashedPassword);
-    $stmt->bindParam(":role", $role);
-    $stmt->execute();
+    $profile_pic = "default.png";
+    if (!empty($_FILES['profile_pic']['name'])) {
+        $profile_pic = time() . "_" . basename($_FILES['profile_pic']['name']);
+        move_uploaded_file($_FILES['profile_pic']['tmp_name'], "uploads/" . $profile_pic);
+    }
 
-    $_SESSION['user'] = $username;
-    $_SESSION['role'] = $role;
-    
-    // Redirect based on role
-    if ($role == "job_seeker") {
-        header("Location: login.html");
+    $sql = "INSERT INTO users (name, email, password, user_type, experience, education, company_name, position, profile_pic)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("sssssssss", $name, $email, $password, $user_type, $experience, $education, $company_name, $position, $profile_pic);
+
+    if ($stmt->execute()) {
+        echo "<script>alert('Registration Successful!'); window.location.href='login.php';</script>";
     } else {
-        header("Location: login.html");
+        echo "Error: " . $conn->error;
     }
-    exit();
 }
 ?>
 
@@ -48,28 +41,50 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register - Job Portal</title>
-    <link rel="stylesheet" href="register.css">
+    <title>Register</title>
+    <link rel="stylesheet" href="registerstyle.css">
+    <script src="register.js" defer></script>
 </head>
 <body>
-    <div class="register-container">
+    <div class="container">
         <h2>Register</h2>
-        <form id="registerForm" action="register.php" method="POST">
-            <input type="text" id="username" name="username" placeholder="Username" required>
-            <input type="email" id="email" name="email" placeholder="Email" required>
-            <input type="password" id="password" name="password" placeholder="Password" required>
-            
-            <select name="role" id="role" required>
-                <option value="">Select Your Role</option>
-                <option value="job_seeker">Looking for a Job</option>
-                <option value="employer">Looking to Hire</option>
+        <form method="POST" action="" enctype="multipart/form-data" onsubmit="return validateForm()">
+            <label>Name:</label>
+            <input type="text" name="name" id="name" required>
+
+            <label>Email:</label>
+            <input type="email" name="email" id="email" required>
+
+            <label>Password:</label>
+            <input type="password" name="password" id="password" required>
+
+            <label>User Type:</label>
+            <select name="user_type" id="user_type" onchange="toggleFields()" required>
+                <option value="job_seeker">Job Seeker</option>
+                <option value="job_giver">Job Giver</option>
             </select>
+
+            <div id="seeker_fields">
+                <label>Experience:</label>
+                <input type="text" name="experience">
+
+                <label>Education:</label>
+                <input type="text" name="education">
+            </div>
+
+            <div id="giver_fields" style="display:none;">
+                <label>Company Name:</label>
+                <input type="text" name="company_name">
+
+                <label>Position:</label>
+                <input type="text" name="position">
+            </div>
+
+            <label>Profile Picture:</label>
+            <input type="file" name="profile_pic">
 
             <button type="submit">Register</button>
         </form>
-        <p>Already have an account? <a href="index.php">Login</a></p>
     </div>
-
-    <script src="register.js"></script>
 </body>
 </html>
