@@ -103,7 +103,32 @@ INSERT INTO `users` (`id`, `name`, `email`, `password`, `user_type`, `experience
 (6, 'Shovon', 'shovon@gmail.com', '$2y$10$p3TKhFbK/jMc9x92k3Uu1e8vfvbFi0eYKltY4sxrjzI3mZRn8zSn6', 'job_seeker', '2 years in Ab group', 'MA ', NULL, NULL, '1743862007_bag.png', '2025-04-05 14:06:47'),
 (7, 'maisha', 'maisha@gmail.com', '$2y$10$5rPurs62E26VP6g28HTBu.jJc9NesKDwA/O7QnqlzViItQXQ4Epsi', 'job_seeker', 'teaching for 2 years', 'BSc in computer science', NULL, NULL, 'default.png', '2025-04-09 07:07:11'),
 (8, 'Liton', 'liton@gmail.com', '$2y$10$vtytUyXEvKn34j/4Pd7YJ.ojr2v0OjgVRJEiL2ROi98Ds3P50TWM.', 'job_giver', NULL, NULL, 'IUB', 'VC', 'default.png', '2025-04-09 09:35:05');
+-- Table structure for table `comments`
+--
 
+CREATE TABLE `comments` (
+  `id` int(11) NOT NULL,
+  `job_id` int(11) NOT NULL,
+  `parent_id` int(11) DEFAULT NULL,
+  `user_name` varchar(100) NOT NULL,
+  `comment_text` text NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `comments`
+--
+
+INSERT INTO `comments` (`id`, `job_id`, `parent_id`, `user_name`, `comment_text`, `created_at`) VALUES
+(3, 4, NULL, 'Sinthia Siddiqui', 'can i have more details?', '2025-05-02 21:10:23'),
+(4, 4, 3, 'Sinthia Siddiqui', 'yes sure', '2025-05-02 21:15:54'),
+(5, 4, NULL, 'Sinthia Siddiqui', 'Is it in BARIDHARA??', '2025-05-03 00:18:06'),
+(6, 3, NULL, 'Sinthia Siddiqui', 'How much is the salary? What kind of cuisine?', '2025-05-03 10:23:05'),
+(7, 2, NULL, 'Sinthia Siddiqui', 'Interested, need more details!', '2025-05-03 10:24:05'),
+(8, 3, 6, 'Sinthia Siddiqui', 'Need more information', '2025-05-03 10:32:29'),
+(9, 2, 7, 'Sinthia Siddiqui', 'The description is so vagueee!', '2025-05-03 10:35:57');
+
+-- --------------------------------------------------------
 --
 -- Indexes for dumped tables
 --
@@ -131,6 +156,13 @@ ALTER TABLE `users`
   ADD UNIQUE KEY `email` (`email`);
 
 --
+-- Indexes for table `comments`
+--
+ALTER TABLE `comments`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `job_id` (`job_id`),
+  ADD KEY `parent_id` (`parent_id`);
+
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -153,6 +185,11 @@ ALTER TABLE `users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
+-- AUTO_INCREMENT for table `comments`
+--
+ALTER TABLE `comments`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
 -- Constraints for dumped tables
 --
 
@@ -162,7 +199,13 @@ ALTER TABLE `users`
 ALTER TABLE `applications`
   ADD CONSTRAINT `applications_ibfk_1` FOREIGN KEY (`job_id`) REFERENCES `jobs` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `applications_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+-- Constraints for table `comments`
+--
+ALTER TABLE `comments`
+  ADD CONSTRAINT `comments_ibfk_1` FOREIGN KEY (`job_id`) REFERENCES `jobs` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `comments_ibfk_2` FOREIGN KEY (`parent_id`) REFERENCES `comments` (`id`) ON DELETE CASCADE;
 
+--
 --
 -- Constraints for table `jobs`
 --
