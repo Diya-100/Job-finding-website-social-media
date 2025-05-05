@@ -4,13 +4,16 @@ header('Content-Type: application/json');
 
 
 $info = [
-    'name' => 'Afraim Uzzaman Romeo', 
-    'id' => '2211512',
-    'personal_notion_page' => 'https://www.notion.so/3895793f65df44559b314d80de7241a3', 
-    'personal_group_page_notion' => 'https://www.notion.so/Romeo-Contribution-1abd06383e5c803ba7f5ce31c262772f', 
-    'github_id' => 'Afraim404',
+    'name' => 'Sinthia Siddiqui', 
+    'id' => '2110214',
+    'personal_notion_page' => 'https://www.notion.so/19672fffbf7380b0b7c0e487fdc9da40?v=19672fffbf7381808c53000ca5abaa11', 
+    'personal_group_page_notion' => '', 
+    'github_id' => 'sinonym8',
     'project_github_link' => 'https://github.com/Diya-100/Job-finding-website-social-media.git' 
 ];
+<?php
+
+header('Content-Type: application/json');
 
 
 echo json_encode($info, JSON_PRETTY_PRINT);

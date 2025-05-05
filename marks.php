@@ -27,31 +27,32 @@
     <script>
         const data = [
             {
-                mark: "4",
-                justification: "job giver can post jobs, the details is stored in backend using job table",
-                internal: "post-job.php"
+                mark: "2",
+                justification: "Created a comments table with fields like id, job_id, user_name, comment_text, timestamp using SQL query which records all the comments and replies from users on a post",
+                internal: "job_finder.sql"
             },
             {
                 mark: "3",
-                justification: "fetch all the jobs from the job table we can search job .",
-                internal: "browsejob.php"
+                justification: "Wrote PHP code to receive POST request containing comment data and used input validation to prevent SQL injection or empty submissions",
+                internal: "add_comment.php"
             },
             
             {
-                mark: "3",
-                justification: "you can view all the jobs you have applied for and view the status if you are accepted of not fetch all the application from the backend and made the application table for this in the database ",
-                internal: "applied-jobs.php"
-            },
-            {
-                mark: "2",
-                justification: "you can withdraw your application and it delete the application from the applications table",
-                internal: "withdraw_applicants.php"
+                mark: "4",
+                justification: "Added comment form under each job post to allow users to submit a comments and wrote code fetch and display comments for each job post",
+                internal: "browsejob.php"
             },
             {
                 mark: "3",
-                justification: "you can view the jobs you have created and you can delete it , if deleted it will delete it from the databasde ",
-                internal: "manage-jobs.php"
+                justification: "Added a reply form under each comment for users to submit replies and wrote code to diplay the replies under each comment for a specific job post",
+                internal: "browsejob.php"
+            },
+            {
+                mark: "3",
+                justification: " Used a nested structure to show replies under each comment and store the threads seperately in database ",
+                internal: "browsejob.php"
             }
+        
         ];
 
         const table = d3.select("#marks-table")
